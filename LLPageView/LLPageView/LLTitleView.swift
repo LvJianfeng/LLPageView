@@ -152,7 +152,6 @@ extension LLTitleView {
     
     private func adjustTitleLabel(targetIndex: Int) {
         let currentLabel = titleLabels[targetIndex]
-        let sourceLabel = titleLabels[currentIndex]
         
         // 恢复所有的label
         for label in scrollView.subviews {
@@ -161,7 +160,6 @@ extension LLTitleView {
             }
         }
         // 切换颜色
-        // 快速切换问题 sourceLabel.textColor = style.normalColor
         currentLabel.textColor = style.selectedColor
         
         currentIndex = targetIndex
@@ -187,17 +185,19 @@ extension LLTitleView: LLContrainerViewDelegate {
         adjustTitleLabel(targetIndex: targetIndex)
     }
     
-    func contrainerView(_ contrainerView: LLContrainerView, targetIndex: Int, progress: CGFloat) {
+    func contrainerView(_ contrainerView: LLContrainerView, targetIndex: Int, sourceIndex: Int, progress: CGFloat) {
+        
         let currentLabel = titleLabels[targetIndex]
-        let sourceLabel = titleLabels[currentIndex]
+        let sourceLabel = titleLabels[sourceIndex]
         
         // 颜色渐变
         let deltaRGB = UIColor.getRGBDelta(style.selectedColor, style.normalColor)
         let selectedRGB = style.selectedColor.getRGB()
         let normalRGB = style.normalColor.getRGB()
         
-        currentLabel.textColor = UIColor.init(r: normalRGB.0 + deltaRGB.0 * progress, g: normalRGB.1 + deltaRGB.1 * progress, b: normalRGB.2 + deltaRGB.2 * progress)
         sourceLabel.textColor = UIColor.init(r: selectedRGB.0 - deltaRGB.0 * progress, g: selectedRGB.1 - deltaRGB.1 * progress, b: selectedRGB.2 - deltaRGB.2 * progress)
+        currentLabel.textColor = UIColor.init(r: normalRGB.0 + deltaRGB.0 * progress, g: normalRGB.1 + deltaRGB.1 * progress, b: normalRGB.2 + deltaRGB.2 * progress)
+        
         
         if style.isShowScrollLine {
             let deltaX = currentLabel.frame.origin.x - sourceLabel.frame.origin.x

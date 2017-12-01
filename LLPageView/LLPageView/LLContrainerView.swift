@@ -10,7 +10,7 @@ import UIKit
 
 protocol LLContrainerViewDelegate: class {
     func contrainerView(_ contrainerView: LLContrainerView, targetIndex: Int)
-    func contrainerView(_ contrainerView: LLContrainerView, targetIndex: Int, progress: CGFloat)
+    func contrainerView(_ contrainerView: LLContrainerView, targetIndex: Int, sourceIndex: Int, progress: CGFloat)
 }
 
 class LLContrainerView: UIView {
@@ -112,6 +112,10 @@ extension LLContrainerView: UICollectionViewDelegate {
         delegate?.contrainerView(self, targetIndex: currentIndex)
     }
     
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        contentEndScroll()
+    }
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         isForbidScroll = false
         startOffsetX = scrollView.contentOffset.x
@@ -145,7 +149,7 @@ extension LLContrainerView: UICollectionViewDelegate {
             progress = (startOffsetX - scrollView.contentOffset.x) / scrollView.bounds.width
         }
         
-        delegate?.contrainerView(self, targetIndex: targetIndex, progress: progress)
+        delegate?.contrainerView(self, targetIndex: targetIndex, sourceIndex: currentIndex,  progress: progress)
     }
 }
 

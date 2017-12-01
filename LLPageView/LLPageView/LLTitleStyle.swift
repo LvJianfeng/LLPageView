@@ -30,7 +30,7 @@ class LLTitleStyle {
     var itemMargin: CGFloat = 30
     
     // 滚动条
-    var isShowScrollLine: Bool = true
+    var isShowScrollLine: Bool = false
     // 滚动条高度
     var scrollLineHeight: CGFloat = 3.0
     // 滚动条颜色
